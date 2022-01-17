@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Root.Configs;
+using _Root.Scripts;
 using _Root.Scripts.Controllers;
+using _Root.Scripts.Controllers.Camera;
 using _Root.Scripts.Models;
 using _Root.Scripts.Views;
 using UnityEngine;
@@ -9,18 +12,18 @@ using UnityEngine;
 public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private PlayerView _playerView;
+    [SerializeField] private CameraView _cameraView;
     [SerializeField] private PlayerInformationObject _playerInformationObject;
     private ExecutableObjects _executableObjects;
 
     private void Awake()
     {
         _executableObjects = new ExecutableObjects();
-        var contactPoller = new ContactPoller(_playerView.Collider);
-        var playerModel = new PlayerModel(_playerInformationObject.PlayerInformation.Speed, _playerInformationObject.PlayerInformation.JumpSpeed,
-            _playerInformationObject.PlayerInformation.HealthPoint, _playerInformationObject.PlayerInformation.DashPower);
-        var playerInputController =
-            new PlayerInputController(playerModel, _playerView.Rigidbody2D, contactPoller, _playerView);
-        var playerController = new PlayerController(_playerView, playerModel, playerInputController, _executableObjects);
+        var levelObjects = new LevelObjects();
+        levelObjects.CameraView = _cameraView;
+        levelObjects.PlayerView = _playerView;
+        levelObjects.PlayerInformationObject = _playerInformationObject;
+        new GameInitializer(_executableObjects, levelObjects);
     }
 
     private void Update()

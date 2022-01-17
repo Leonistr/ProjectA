@@ -21,6 +21,8 @@ namespace _Root.Scripts.Controllers
         private int _jumpCount = 0;
         private const int _jumpWallCoef = 5;
         private PlayerView _playerView;
+        private int _jumpHash;
+        private int _runHash;
 
         public PlayerInputController(IPlayerModel playerModel, Rigidbody2D rigidbody, 
             ContactPoller contactPoller, PlayerView playerView)
@@ -29,6 +31,8 @@ namespace _Root.Scripts.Controllers
             _rigidbody = rigidbody;
             _contactPoller = contactPoller;
             _playerView = playerView;
+            _jumpHash = Animator.StringToHash("IsJumping");
+            _runHash = Animator.StringToHash("Speed");
             _horizontalInput = new PlayerHorizontalInput(rigidbody, playerModel);
             _jumpController = new PlayerJumpController(rigidbody, playerModel);
             _horizontalInput.OnAxisChange += HorizontalInputOnOnAxisChange;
@@ -62,8 +66,22 @@ namespace _Root.Scripts.Controllers
             Reflect();
             Jump();
             JumpFromWall();
+            PlayAnimation();
         }
 
+        private void PlayAnimation()
+        {
+            _playerView.Animator.SetBool(_jumpHash, !_contactPoller.IsGrounded);
+            if (_horizontalMove > 0.1 || _horizontalMove < -0.1)
+            {
+                _playerView.Animator.SetFloat(_runHash, 1);
+            }
+            else
+            {
+                _playerView.Animator.SetFloat(_runHash, 0);
+            }
+        }
+        
         private void Jump()
         {
             if (_jumpAxis > 0.1f)

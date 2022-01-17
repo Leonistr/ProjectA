@@ -23,7 +23,6 @@ namespace _Root.Scripts.Controllers
             _jumpSpeed = _playerModel.JumpSpeed;
             _playerView.OnObstacleCollide += ApplyEffect;
             _executableObjects = executableObjects;
-            _executableObjects.AddExecutable(this);
         }
 
         private void ApplyEffect(float obj)
