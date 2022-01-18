@@ -37,7 +37,9 @@ namespace _Root.Scripts.Controllers
             _playerModel = new PlayerModel(_levelObjects.PlayerInformationObject.PlayerInformation.Speed, 
                 _levelObjects.PlayerInformationObject.PlayerInformation.JumpSpeed, health
                 , oxygen,
-                _levelObjects.PlayerInformationObject.PlayerInformation.DashPower);
+                _levelObjects.PlayerInformationObject.PlayerInformation.DashPower,
+                _levelObjects.PlayerInformationObject.PlayerInformation.DashTime,
+                _levelObjects.PlayerInformationObject.PlayerInformation.BlockTime);
             var playerInputController =
                 new PlayerInputController(_playerModel, _levelObjects.PlayerView.Rigidbody2D, contactPoller, 
                     _levelObjects.PlayerView);

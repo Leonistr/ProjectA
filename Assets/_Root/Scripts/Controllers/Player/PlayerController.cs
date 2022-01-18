@@ -17,10 +17,10 @@ namespace _Root.Scripts.Controllers
         private PlayerInputController _playerInputController;
         private ExecutableObjects _executableObjects;
         private bool _blockControllers;
-        private const float DASH_TIMER = 0.25f;
-        private const float BLOCK_TIMER = 1f;
-        private float _currentDashTimer = 0.25f;
-        private float _currentBlockTime = 1f;
+        private float DASH_TIMER;
+        private float BLOCK_TIMER;
+        private float _currentDashTimer;
+        private float _currentBlockTime;
 
         #endregion
 
@@ -36,7 +36,10 @@ namespace _Root.Scripts.Controllers
             _executableObjects = executableObjects;
             _playerView.StartCoroutine(MinusOxygen());
             _playerModel.Health.OnHPEnded += Dispose;
-            _playerModel.Health.OnHPChange += ThrowAway;
+            DASH_TIMER = _playerModel.DashTime;
+            BLOCK_TIMER = _playerModel.BlockTime;
+            _currentBlockTime = BLOCK_TIMER;
+            _currentDashTimer = DASH_TIMER;
         }
 
         #endregion
@@ -60,10 +63,7 @@ namespace _Root.Scripts.Controllers
             _playerInputController.Move(deltaTime);
         }
 
-        private void ThrowAway()
-        {
-            _playerView.Rigidbody2D.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-        }
+        
         private void Dash(float deltaTime)
         {
             if (Input.GetButton("Dash"))

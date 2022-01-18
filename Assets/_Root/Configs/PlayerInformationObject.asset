@@ -18,3 +18,5 @@ MonoBehaviour:
     <HealthPoint>k__BackingField: 20
     <OxygenPoint>k__BackingField: 50
     <DashPower>k__BackingField: 130
+    <DashTime>k__BackingField: 0.2
+    <BlockTime>k__BackingField: 1

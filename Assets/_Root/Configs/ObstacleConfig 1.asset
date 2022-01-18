@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1b1eaa4066546c2b6d386751f204555, type: 3}
-  m_Name: ObstacleConfig
+  m_Name: ObstacleConfig 1
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 10
-  <Cooldown>k__BackingField: 2
-  <ObstacleType>k__BackingField: 0
+  <Cooldown>k__BackingField: 0
+  <ObstacleType>k__BackingField: 1

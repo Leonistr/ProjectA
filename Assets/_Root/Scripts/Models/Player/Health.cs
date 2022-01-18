@@ -33,6 +33,7 @@ namespace _Root.Scripts.Models
         {
             CurrentHP -= value;
             OnHPChange.Invoke();
+            Debug.Log($"Current {CurrentHP}");
             if (CurrentHP == 0 || CurrentHP < 0)
             {
                 OnHPEnded.Invoke();

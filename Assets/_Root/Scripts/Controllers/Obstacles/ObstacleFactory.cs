@@ -30,7 +30,8 @@ namespace _Root.Scripts.Controllers.Obstacles
             List<ObstacleController> obstacleControllers = new List<ObstacleController>();
             for (int i = 0; i < _obstacleViews.Count; i++)
             {
-                var model = new ObstacleModel(_obstacleViews[i].ObstacleConfig.Damage);
+                var model = new ObstacleModel(_obstacleViews[i].ObstacleConfig.Damage,_obstacleViews[i].ObstacleConfig.ObstacleType,
+                    _obstacleViews[i].ObstacleConfig.Cooldown);
                 ObstacleController obstacleController = new NullObstacleController(_obstacleViews[i], model);
                 switch (_obstacleViews[i].ObstacleConfig.ObstacleType)
                 {
@@ -38,6 +39,7 @@ namespace _Root.Scripts.Controllers.Obstacles
                         obstacleController = new SpikeController(_obstacleViews[i], model);
                         break;
                     case ObstacleType.Pike:
+                        obstacleController = new PikeController(_obstacleViews[i], model);
                         break;
                     case ObstacleType.Saw:
                         break;

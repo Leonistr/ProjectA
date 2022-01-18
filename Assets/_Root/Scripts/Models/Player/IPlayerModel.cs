@@ -9,5 +9,7 @@ namespace _Root.Scripts.Models
         Health Health { get; set; }
         Oxygen Oxygen { get; set; }
         float DashPower { get; set; }
+        float DashTime { get;  set; }
+        float BlockTime { get; set; }
     }
 }

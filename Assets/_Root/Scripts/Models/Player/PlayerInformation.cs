@@ -12,5 +12,7 @@ namespace _Root.Scripts.Models
         
         [field: SerializeField] public float OxygenPoint { get; private set; }
         [field: SerializeField] public float DashPower { get; private set; }
+        [field: SerializeField] public float DashTime { get; private set; }
+        [field: SerializeField] public float BlockTime { get; private set; }
     }
 }

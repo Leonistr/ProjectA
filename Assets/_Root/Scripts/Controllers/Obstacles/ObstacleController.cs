@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using _Root.Scripts.Models;
 using _Root.Scripts.Models.Obstacles;
 using _Root.Scripts.Views;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Root.Scripts.Controllers.Obstacles
@@ -10,8 +12,9 @@ namespace _Root.Scripts.Controllers.Obstacles
     {
         #region Fields
         
-        private ObstacleView _obstacleView;
-        private IObstacleModel _obstacleModel;
+        protected ObstacleView _obstacleView;
+        protected IObstacleModel _obstacleModel;
+        
         public event Action<float> OnPlayerCollide = f => { };
 
         #endregion
@@ -24,7 +27,9 @@ namespace _Root.Scripts.Controllers.Obstacles
             _obstacleView = obstacleView;
             _obstacleModel = obstacleModel;
             _obstacleView.OnPlayerCollide += ApplyEffect;
+            
         }
+
 
         #endregion
         

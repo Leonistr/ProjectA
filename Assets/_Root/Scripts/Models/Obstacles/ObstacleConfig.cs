@@ -6,6 +6,7 @@ namespace _Root.Scripts.Models.Obstacles
     public class ObstacleConfig : ScriptableObject
     {
         [field: SerializeField] public float Damage { get; private set; }
+        [field: SerializeField] public float Cooldown { get; private set; }
         [field: SerializeField] public ObstacleType ObstacleType { get; private set; }
     }
 

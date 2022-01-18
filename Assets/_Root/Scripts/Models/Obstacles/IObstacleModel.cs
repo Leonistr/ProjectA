@@ -3,5 +3,7 @@
     public interface IObstacleModel
     {
         float Damage { get; }
+        float Cooldown { get; }
+        ObstacleType ObstacleType { get; }
     }
 }
