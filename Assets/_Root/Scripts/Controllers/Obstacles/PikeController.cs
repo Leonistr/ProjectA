@@ -22,7 +22,7 @@ namespace _Root.Scripts.Controllers.Obstacles
 
         private void PlayAnimation()
         {
-            _obstacleView.ConnectedCollider.gameObject.SetActive(false);
+            SetTrapActive();
             _obstacleView.gameObject.transform.DOMove(new Vector3(_obstacleView.gameObject.transform.position.x,
                 _obstacleView.gameObject.transform.position.y + 1.5f), 0.5f).OnComplete(OffTrap);
         }
@@ -37,8 +37,20 @@ namespace _Root.Scripts.Controllers.Obstacles
             yield return new WaitForSeconds(_obstacleModel.Cooldown);
             
             _obstacleView.gameObject.transform.DOMove(new Vector3(_obstacleView.gameObject.transform.position.x,
-                _obstacleView.gameObject.transform.position.y - 1.5f), 0.5f);
-            _obstacleView.ConnectedCollider.gameObject.SetActive(true);
+                _obstacleView.gameObject.transform.position.y - 1.5f), 0.5f).OnComplete(SetTrapActive);
+            
+        }
+
+        private void SetTrapActive()
+        {
+            if (_obstacleView.ConnectedCollider.gameObject.activeSelf)
+            {
+                _obstacleView.ConnectedCollider.gameObject.SetActive(false);
+            }
+            else
+            {
+                _obstacleView.ConnectedCollider.gameObject.SetActive(true);
+            }
         }
 
         #endregion

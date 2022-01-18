@@ -3,6 +3,7 @@ using System.Collections;
 using _Root.Scripts.Controllers.Interfaces;
 using _Root.Scripts.Models;
 using _Root.Scripts.Views;
+using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -36,10 +37,25 @@ namespace _Root.Scripts.Controllers
             _executableObjects = executableObjects;
             _playerView.StartCoroutine(MinusOxygen());
             _playerModel.Health.OnHPEnded += Dispose;
+            _playerModel.Health.OnHPChange += HPChangeAnimation;
             DASH_TIMER = _playerModel.DashTime;
             BLOCK_TIMER = _playerModel.BlockTime;
             _currentBlockTime = BLOCK_TIMER;
             _currentDashTimer = DASH_TIMER;
+        }
+
+        private void HPChangeAnimation()
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append( _playerView.Renderer.DOFade(0.5f, 0.5f));
+            sequence.Append( _playerView.Renderer.DOFade(1f, 0.5f));
+            sequence.Append(_playerView.Renderer.DOFade(0.5f, 0.5f));
+            sequence.Append( _playerView.Renderer.DOFade(1f, 0.5f));
+            sequence.Append( _playerView.Renderer.DOFade(0.5f, 0.5f));
+            sequence.Append( _playerView.Renderer.DOFade(1f, 0.5f));
+            sequence.Append(_playerView.Renderer.DOFade(0.5f, 0.5f));
+            sequence.Append( _playerView.Renderer.DOFade(1f, 0.5f));
+            sequence.Play();
         }
 
         #endregion
@@ -105,6 +121,8 @@ namespace _Root.Scripts.Controllers
         {
             _executableObjects.RemoveExecutable(this);
             _playerInputController.Dispose();
+            _playerModel.Health.OnHPEnded -= Dispose;
+            _playerModel.Health.OnHPChange -= HPChangeAnimation;
             Object.Destroy(_playerView.gameObject);
         }
 

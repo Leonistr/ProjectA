@@ -32,12 +32,13 @@ namespace _Root.Scripts.Models
         public void RemoveHealthPoints(float value)
         {
             CurrentHP -= value;
-            OnHPChange.Invoke();
+            
             Debug.Log($"Current {CurrentHP}");
             if (CurrentHP == 0 || CurrentHP < 0)
             {
                 OnHPEnded.Invoke();
             }
+            OnHPChange.Invoke();
         }
 
         public void AddHealthPoints(float value)
