@@ -35,6 +35,8 @@ namespace _Root.Scripts.Controllers
             _playerInputController = playerInputController;
             _executableObjects = executableObjects;
             _playerView.StartCoroutine(MinusOxygen());
+            _playerModel.Health.OnHPEnded += Dispose;
+            _playerModel.Health.OnHPChange += ThrowAway;
         }
 
         #endregion
@@ -47,6 +49,7 @@ namespace _Root.Scripts.Controllers
             if (!Input.GetButton("Dash") && _currentDashTimer != DASH_TIMER)
             {
                 _currentDashTimer = DASH_TIMER;
+                Debug.Log("Ready to dash");
             }
             if (_currentDashTimer < 0)
             {
@@ -57,12 +60,17 @@ namespace _Root.Scripts.Controllers
             _playerInputController.Move(deltaTime);
         }
 
+        private void ThrowAway()
+        {
+            _playerView.Rigidbody2D.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+        }
         private void Dash(float deltaTime)
         {
             if (Input.GetButton("Dash"))
             {
                 if (_blockControllers)
                 {
+                    Debug.Log("Can't dash");
                     _currentBlockTime -= deltaTime;
                     if (_currentBlockTime < 0)
                     {
@@ -72,7 +80,7 @@ namespace _Root.Scripts.Controllers
                     return;
                 }
                 _currentDashTimer -= deltaTime;
-                
+                Debug.Log("Ready to dash");
                 if (_playerView.Renderer.flipX)
                 {
                     _playerInputController.Dash(-_playerModel.DashPower);
@@ -90,7 +98,6 @@ namespace _Root.Scripts.Controllers
             {
                 yield return new WaitForSeconds(1f);
                 _playerModel.Oxygen.RemoveOxygen(1f);
-                Debug.Log($"{_playerModel.Oxygen.CurrentOxygen}");
             }
             _playerView.StopCoroutine(MinusOxygen());
         }

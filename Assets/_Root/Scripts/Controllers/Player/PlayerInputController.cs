@@ -23,6 +23,8 @@ namespace _Root.Scripts.Controllers
         private int _jumpCount = 0;
         private int _jumpHash;
         private int _runHash;
+        private int _onWallHash;
+        private int _onWallAnimHash;
         private float _horizontalMove;
         private float _jumpAxis;
 
@@ -40,6 +42,8 @@ namespace _Root.Scripts.Controllers
             _playerView = playerView;
             _jumpHash = Animator.StringToHash("IsJumping");
             _runHash = Animator.StringToHash("Speed");
+            _onWallHash = Animator.StringToHash("IsOnWall");
+            _onWallAnimHash = Animator.StringToHash("OnWall");
             _horizontalInput = new PlayerHorizontalInput();
             _jumpController = new PlayerJumpController();
             _horizontalInput.OnAxisChange += HorizontalInputOnOnAxisChange;
@@ -126,6 +130,9 @@ namespace _Root.Scripts.Controllers
         {
             if ((_contactPoller.HasLeftContact || _contactPoller.HasRightContact) && !_contactPoller.IsGrounded)
             {
+                _playerView.Animator.SetBool(_onWallHash, true);
+                _playerView.Animator.StopPlayback();
+                _playerView.Animator.Play(_onWallAnimHash);
                 if (_horizontalMove == 0)
                 {
                     _rigidbody.gravityScale = 0;
@@ -139,6 +146,7 @@ namespace _Root.Scripts.Controllers
             else
             {
                 _rigidbody.gravityScale = 1;
+                _playerView.Animator.SetBool(_onWallHash, false);
             }
         }
 

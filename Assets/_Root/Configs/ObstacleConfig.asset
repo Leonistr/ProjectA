@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567877df06084814b0ecb8ff0621981d, type: 3}
-  m_Name: ObstacleInformationObject
+  m_Script: {fileID: 11500000, guid: f1b1eaa4066546c2b6d386751f204555, type: 3}
+  m_Name: ObstacleConfig
   m_EditorClassIdentifier: 
-  ObstacleInfo:
-    <ObstacleObject>k__BackingField: {fileID: 3822744559055645168, guid: 394d20589cc00c148ac0e49dcd4ffc62,
-      type: 3}
-    <Damage>k__BackingField: 10
+  <Damage>k__BackingField: 10
+  <ObstacleType>k__BackingField: 1

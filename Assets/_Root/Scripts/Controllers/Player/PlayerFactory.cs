@@ -10,7 +10,8 @@ namespace _Root.Scripts.Controllers
 
         private LevelObjects _levelObjects;
         private ExecutableObjects _executableObjects;
-
+        private IPlayerModel _playerModel;
+        
         #endregion
 
 
@@ -33,18 +34,23 @@ namespace _Root.Scripts.Controllers
             var oxygen = new Oxygen(_levelObjects.PlayerInformationObject.PlayerInformation.OxygenPoint);
             var health = new Health(_levelObjects.PlayerInformationObject.PlayerInformation.HealthPoint);
             var contactPoller = new ContactPoller(_levelObjects.PlayerView.Collider);
-            var playerModel = new PlayerModel(_levelObjects.PlayerInformationObject.PlayerInformation.Speed, 
+            _playerModel = new PlayerModel(_levelObjects.PlayerInformationObject.PlayerInformation.Speed, 
                 _levelObjects.PlayerInformationObject.PlayerInformation.JumpSpeed, health
                 , oxygen,
                 _levelObjects.PlayerInformationObject.PlayerInformation.DashPower);
             var playerInputController =
-                new PlayerInputController(playerModel, _levelObjects.PlayerView.Rigidbody2D, contactPoller, 
+                new PlayerInputController(_playerModel, _levelObjects.PlayerView.Rigidbody2D, contactPoller, 
                     _levelObjects.PlayerView);
-            var playerController = new PlayerController(_levelObjects.PlayerView, playerModel, 
+            var playerController = new PlayerController(_levelObjects.PlayerView, _playerModel, 
                 playerInputController, _executableObjects);
             return playerController;
         }
 
+        public IPlayerModel GetPlayerModel()
+        {
+            return _playerModel;
+        }
+        
         #endregion
     }
 }
