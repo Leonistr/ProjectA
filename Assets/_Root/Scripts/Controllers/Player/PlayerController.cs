@@ -10,15 +10,22 @@ namespace _Root.Scripts.Controllers
 {
     public class PlayerController : IExecutable, IDisposable
     {
-        private PlayerView _playerView;
+        #region Fields
+
         private IPlayerModel _playerModel;
+        private PlayerView _playerView;
         private PlayerInputController _playerInputController;
         private ExecutableObjects _executableObjects;
-        private float _dashTimer = 0.25f;
-        private float _currentDashTimer = 0.25f;
         private bool _blockControllers;
-        private float _blockTimer = 1f;
+        private const float DASH_TIMER = 0.25f;
+        private const float BLOCK_TIMER = 1f;
+        private float _currentDashTimer = 0.25f;
         private float _currentBlockTime = 1f;
+
+        #endregion
+
+        
+        #region Constructor
 
         public PlayerController(PlayerView playerView, IPlayerModel playerModel,
             PlayerInputController playerInputController, ExecutableObjects executableObjects)
@@ -30,17 +37,28 @@ namespace _Root.Scripts.Controllers
             _playerView.StartCoroutine(MinusOxygen());
         }
 
+        #endregion
+
+        
+        #region Methods
+
         public void Execute(float deltaTime)
         {
-            if (!Input.GetButton("Dash") && _currentDashTimer != _dashTimer)
+            if (!Input.GetButton("Dash") && _currentDashTimer != DASH_TIMER)
             {
-                _currentDashTimer = _dashTimer;
+                _currentDashTimer = DASH_TIMER;
             }
             if (_currentDashTimer < 0)
             {
-                _currentDashTimer = _dashTimer;
+                _currentDashTimer = DASH_TIMER;
                 _blockControllers = true;
             }
+            Dash(deltaTime);
+            _playerInputController.Move(deltaTime);
+        }
+
+        private void Dash(float deltaTime)
+        {
             if (Input.GetButton("Dash"))
             {
                 if (_blockControllers)
@@ -48,7 +66,7 @@ namespace _Root.Scripts.Controllers
                     _currentBlockTime -= deltaTime;
                     if (_currentBlockTime < 0)
                     {
-                        _currentBlockTime = _blockTimer;
+                        _currentBlockTime = BLOCK_TIMER;
                         _blockControllers = false;
                     }
                     return;
@@ -64,9 +82,8 @@ namespace _Root.Scripts.Controllers
                     _playerInputController.Dash(_playerModel.DashPower);
                 }
             }
-            _playerInputController.Move(deltaTime);
         }
-
+        
         private IEnumerator MinusOxygen()
         {
             while (_playerModel.Oxygen.HasOxygen)
@@ -83,5 +100,7 @@ namespace _Root.Scripts.Controllers
             _playerInputController.Dispose();
             Object.Destroy(_playerView.gameObject);
         }
+
+        #endregion
     }
 }

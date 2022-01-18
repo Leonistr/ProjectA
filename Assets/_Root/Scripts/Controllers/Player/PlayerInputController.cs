@@ -8,21 +8,28 @@ namespace _Root.Scripts.Controllers
 {
     public class PlayerInputController : IDisposable
     {
+        #region Fields
+
+        private PlayerView _playerView;
+        private ContactPoller _contactPoller;
+        private IPlayerModel _playerModel;
+        private Rigidbody2D _rigidbody;
+        private const int JUMP_WALL_COEF = 5;
+        private const int JUMP_VALUE_ITERATIONS = 60;
         private PlayerHorizontalInput _horizontalInput;
         private PlayerJumpController _jumpController;
-        private float _horizontalMove;
-        private float _jumpAxis;
-        private Rigidbody2D _rigidbody;
-        private IPlayerModel _playerModel;
         private bool _jumpControl;
         private int _jumpIterations = 0;
-        private int _jumpValueIterations = 60;
-        private ContactPoller _contactPoller;
         private int _jumpCount = 0;
-        private const int _jumpWallCoef = 5;
-        private PlayerView _playerView;
         private int _jumpHash;
         private int _runHash;
+        private float _horizontalMove;
+        private float _jumpAxis;
+
+        #endregion
+
+
+        #region Constructor
 
         public PlayerInputController(IPlayerModel playerModel, Rigidbody2D rigidbody, 
             ContactPoller contactPoller, PlayerView playerView)
@@ -33,11 +40,29 @@ namespace _Root.Scripts.Controllers
             _playerView = playerView;
             _jumpHash = Animator.StringToHash("IsJumping");
             _runHash = Animator.StringToHash("Speed");
-            _horizontalInput = new PlayerHorizontalInput(rigidbody, playerModel);
-            _jumpController = new PlayerJumpController(rigidbody, playerModel);
+            _horizontalInput = new PlayerHorizontalInput();
+            _jumpController = new PlayerJumpController();
             _horizontalInput.OnAxisChange += HorizontalInputOnOnAxisChange;
             _jumpController.OnAxisChange += JumpControllerOnOnAxisChange;
             _horizontalMove = 0;
+        }
+
+        #endregion
+
+
+        #region Methods
+
+        public void Move(float deltaTime)
+        {
+            _contactPoller.UpdateContacts();
+            _horizontalInput.Execute(deltaTime);
+            _jumpController.Execute(deltaTime);
+            Vector3 vectorMove = new Vector3(_horizontalMove * _playerModel.Speed, _rigidbody.velocity.y);
+            _rigidbody.velocity = vectorMove; 
+            Reflect();
+            Jump();
+            JumpFromWall();
+            PlayAnimation();
         }
 
         private void JumpControllerOnOnAxisChange(float obj)
@@ -55,19 +80,6 @@ namespace _Root.Scripts.Controllers
         {
             _rigidbody.AddForce(Vector2.right * dashPower);
         }
-        
-        public void Move(float deltaTime)
-        {
-            _contactPoller.UpdateContacts();
-            _horizontalInput.Execute(deltaTime);
-            _jumpController.Execute(deltaTime);
-            Vector3 vectorMove = new Vector3(_horizontalMove * _playerModel.Speed, _rigidbody.velocity.y);
-            _rigidbody.velocity = vectorMove; 
-            Reflect();
-            Jump();
-            JumpFromWall();
-            PlayAnimation();
-        }
 
         private void PlayAnimation()
         {
@@ -81,7 +93,7 @@ namespace _Root.Scripts.Controllers
                 _playerView.Animator.SetFloat(_runHash, 0);
             }
         }
-        
+
         private void Jump()
         {
             if (_jumpAxis > 0.1f)
@@ -98,7 +110,7 @@ namespace _Root.Scripts.Controllers
 
             if (_jumpControl)
             {
-                if (_jumpIterations++ < _jumpValueIterations)
+                if (_jumpIterations++ < JUMP_VALUE_ITERATIONS)
                 {
                     _rigidbody.AddForce(Vector2.up * _playerModel.JumpSpeed / _jumpIterations);
                 }
@@ -121,7 +133,7 @@ namespace _Root.Scripts.Controllers
                 }
                 if (Input.GetButtonDown("Jump"))
                 {
-                    _rigidbody.AddForce(Vector2.up * _playerModel.JumpSpeed * _jumpWallCoef);
+                    _rigidbody.AddForce(Vector2.up * _playerModel.JumpSpeed * JUMP_WALL_COEF);
                 }
             }
             else
@@ -147,5 +159,7 @@ namespace _Root.Scripts.Controllers
             _horizontalInput.OnAxisChange -= HorizontalInputOnOnAxisChange;
             _jumpController.OnAxisChange -= JumpControllerOnOnAxisChange;
         }
+
+        #endregion
     }
 }

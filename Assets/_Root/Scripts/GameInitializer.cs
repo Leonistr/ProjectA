@@ -11,7 +11,7 @@ namespace _Root.Scripts
         {
             var playerFactory = new PlayerFactory(levelObjects, executableObjects);
             var playerController = playerFactory.CreatePlayer();
-            var cameraContoller = new CameraController(levelObjects.CameraView, executableObjects);
+            var cameraContoller = new CameraController(levelObjects.CameraView);
             executableObjects.AddExecutable(playerController);
             executableObjects.AddExecutable(cameraContoller);
         }

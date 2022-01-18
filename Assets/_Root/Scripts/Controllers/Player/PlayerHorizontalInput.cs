@@ -8,19 +8,31 @@ namespace _Root.Scripts.Controllers
 {
     public class PlayerHorizontalInput : IInput, IExecutable
     {
-        private Rigidbody2D _rigidbody;
-        private IPlayerModel _playerModel;
+        #region Fields
+
         public event Action<float> OnAxisChange = f => { };
 
-        public PlayerHorizontalInput(Rigidbody2D rigidbody2D, IPlayerModel playerModel)
+        #endregion
+
+
+        #region Constructor
+
+        public PlayerHorizontalInput()
         {
-            _rigidbody = rigidbody2D;
-            _playerModel = playerModel;
         }
+
+        #endregion
+
+
+        #region Methods
+
         public void Execute(float deltaTime)
         {
             OnAxisChange.Invoke(Input.GetAxis("Horizontal"));
         }
+
+        #endregion
+        
 
         
     }

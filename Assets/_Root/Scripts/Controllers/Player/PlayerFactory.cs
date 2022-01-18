@@ -6,14 +6,28 @@ namespace _Root.Scripts.Controllers
 {
     public class PlayerFactory
     {
+        #region Fields
+
         private LevelObjects _levelObjects;
         private ExecutableObjects _executableObjects;
+
+        #endregion
+
+
+        #region Constructor
 
         public PlayerFactory(LevelObjects levelObjects, ExecutableObjects executableObjects)
         {
             _levelObjects = levelObjects;
             _executableObjects = executableObjects;
         }
+
+        #endregion
+
+
+
+        #region Methods
+
         public PlayerController CreatePlayer()
         {
             var oxygen = new Oxygen(_levelObjects.PlayerInformationObject.PlayerInformation.OxygenPoint);
@@ -30,5 +44,7 @@ namespace _Root.Scripts.Controllers
                 playerInputController, _executableObjects);
             return playerController;
         }
+
+        #endregion
     }
 }

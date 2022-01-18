@@ -6,8 +6,15 @@ namespace _Root.Scripts.Controllers
 {
     public class ExecutableObjects : IExecutable
     {
+        #region Fields
+
         private List<IExecutable> _executables = new List<IExecutable>();
-        
+
+        #endregion
+
+
+        #region Methods
+
         public void Execute(float deltaTime)
         {
             for (int i = 0; i < _executables.Count; i++)
@@ -25,6 +32,7 @@ namespace _Root.Scripts.Controllers
         {
             _executables.Remove(executable);
         }
-        
+
+        #endregion
     }
 }

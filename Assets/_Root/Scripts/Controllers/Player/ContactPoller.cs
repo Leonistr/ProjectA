@@ -4,19 +4,35 @@ namespace _Root.Scripts.Controllers
 {
     public class ContactPoller
     {
-        private const float _collisionTresh = 0.5f;
+        #region Fields
+
         private ContactPoint2D[] _contactPoints = new ContactPoint2D[10];
-        private int _contactsCount;
         private readonly Collider2D _collider;
-        
+        private const float _collisionTresh = 0.5f;
+        private int _contactsCount;
+
+        #endregion
+
+        #region Properties
+
         public bool IsGrounded { get; private set; }
         public bool HasLeftContact { get; private set; }
         public bool HasRightContact { get; private set; }
+
+        #endregion
+
+
+        #region Constructor
 
         public ContactPoller(Collider2D collider)
         {
             _collider = collider;
         }
+
+        #endregion
+
+
+        #region Methods
 
         public void UpdateContacts()
         {
@@ -44,5 +60,9 @@ namespace _Root.Scripts.Controllers
                 }
             }
         }
+
+        #endregion
+        
+        
     }
 }

@@ -7,16 +7,25 @@ namespace _Root.Scripts.Controllers
 {
     public class PlayerJumpController : IInput, IExecutable
     {
-        private Rigidbody2D _rigidbody;
-        public event Action<float> OnAxisChange = f => { };
-        private IPlayerModel _playerModel;
+        #region Fields
 
-        public PlayerJumpController(Rigidbody2D rigidbody, IPlayerModel playerModel)
+        public event Action<float> OnAxisChange = f => { };
+
+        #endregion
+
+
+
+        #region Constructor
+
+        public PlayerJumpController()
         {
-            _rigidbody = rigidbody;
-            _playerModel = playerModel;
         }
 
+        #endregion
+
+
+
+        #region Methods
 
         public void Execute(float deltaTime)
         {
@@ -29,6 +38,8 @@ namespace _Root.Scripts.Controllers
                 OnAxisChange.Invoke(0);
             }
         }
+
+        #endregion
 
         
     }

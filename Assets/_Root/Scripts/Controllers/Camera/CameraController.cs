@@ -6,15 +6,22 @@ namespace _Root.Scripts.Controllers.Camera
 {
     public class CameraController : IExecutable
     {
+        #region Fields
+
+        private CameraView _cameraView;
         private Transform _targetTransform;
+        private const int _cameraOffset = -10;
         private float _minXPosition;
         private float _maxXPosition;
-        private float _minYPosition;  
-        private float _maxYPosition;  
-        private CameraView _cameraView;
-        private const int _cameraOffset = -10;
+        private float _minYPosition;
+        private float _maxYPosition;
 
-        public CameraController(CameraView cameraView, ExecutableObjects executableObjects)
+        #endregion
+
+        
+        #region Constructor
+
+        public CameraController(CameraView cameraView)
         {
             _cameraView = cameraView;
             _targetTransform = _cameraView.TargetPosition;
@@ -24,6 +31,11 @@ namespace _Root.Scripts.Controllers.Camera
             _maxYPosition = _cameraView.MaxYPosition;
         }
 
+        #endregion
+
+        
+        #region Methods
+
         public void Execute(float deltaTime)
         {
             var pos = _cameraView.transform.position;
@@ -31,5 +43,9 @@ namespace _Root.Scripts.Controllers.Camera
             pos.y = Mathf.Clamp(_targetTransform.position.y, _minYPosition, _maxYPosition);
             _cameraView.transform.position = pos;
         }
+
+        #endregion
+
+        
     }
 }
